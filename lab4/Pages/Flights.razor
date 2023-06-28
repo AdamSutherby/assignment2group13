@@ -1,0 +1,56 @@
+﻿@page "/flights"
+<form>
+    <h3>Flight Finder</h3>
+    <div class="flex-column findFlights">
+        <label for="code">Code: </label>
+        <input placeholder="Any" type="text" id="code" />
+    </div>
+    <div class="flex-column findFlights">
+        <label for="airline">Airline: </label>
+        <input placeholder="Any" type="text" id="airline" />
+    </div>
+    <div class="flex-column findFlights">
+        <label for="name">Name: </label>
+        <input placeholder="Any" type="text" id="name" />
+    </div>
+    <button>Find flights</button>
+</form>
+<div class="flights">
+    <h3>Flights</h3>
+    <input placeholder="Loading..." />
+</div>
+<form>
+    <h3>Reserve</h3>
+    <div class="flex-column reserveFlights">
+        <label>Flight Code: </label>
+        <input placeholder="Flight" />
+    </div>
+    <div class="flex-column reserveFlights">
+        <label>Airline: </label>
+        <input placeholder="Airline" />
+    </div>
+    <div class="flex-column reserveFlights">
+        <label>Day: </label>
+        <input placeholder="Day" />
+    </div>
+    <div class="flex-column reserveFlights">
+        <label>Time: </label>
+        <input placeholder="Time" />
+    </div>
+    <div class="flex-column reserveFlights">
+        <label>Cost: </label>
+        <input placeholder="0" />
+    </div>
+    <div class="flex-column reserveFlights">
+        <label>Name: </label>
+        <input placeholder="Name" />
+    </div>
+    <div class="flex-column reserveFlights">
+        <label>Citizenship: </label>
+        <input placeholder="Citizenship" />
+    </div>
+    <button>Reserve</button>
+</form>
+@code {
+
+}
