@@ -50,8 +50,10 @@ namespace Flights
         }
         public static Flight[] ReadFlightsFromFile(string filePath)
         {
-            string filePath = "flights.csv";
-            string[] lines = File.ReadAllLines(filePath);
+            //string filePath = "flights.csv";
+            //string[] lines = File.ReadAllLines(filePath);
+            var path = Path.Combine(FileSystem.AppDataDirectory, "flights.csv");
+            string[] lines = File.ReadAllLines(path);
             Flight[] flights = new Flight[lines.Length];
 
             for (int i = 0; i < lines.Length; i++)

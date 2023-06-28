@@ -1,55 +1,62 @@
 ﻿@page "/reservations"
-<form>
-    <h3>Reservation Finder</h3>
-    <div class="flex-column findReservations">
-        <label for="code">Code: </label>
-        <input placeholder="Any" type="text" id="code" />
+
+<h3>Reservation Finder</h3>
+
+<form class ="findReservations">
+    <div>
+        <p>Code: </p>
+        <input placeholder="Any" id="code" />
     </div>
-    <div class="flex-column findReservations">
-        <label for="airline">Airline: </label>
-        <input placeholder="Any" type="text" id="airline" />
+    <div>
+        <p>Airline: </p>
+        <input placeholder="Any" id="airline" />
     </div>
-    <div class="flex-column findReservations">
-        <label for="name">Name: </label>
-        <input placeholder="Any" type="text" id="name" />
+    <div>
+        <p>Name: </p>
+        <input placeholder="Any" id="name" />
     </div>
-    <button>Find reservations</button>
+    <p></p>
+    <button class="blueButton">Find reservations</button>
 </form>
+
+<h3>Reservations</h3>
 <div class="reservations">
-    <h3>Reservations</h3>
     <input placeholder="Loading..." />
 </div>
+
+<h3>Reserve</h3>
 <form>
-    <h3>Reserve</h3>
     <div class="flex-column reserveReservations">
-        <label>Reservation Code: </label>
+        <p>Reservation Code:</p>
         <input placeholder="Reservation Code" />
     </div>
     <div class="flex-column reserveReservations">
-        <label>Flight Code: </label>
+        <p>Flight Code:</p>
         <input placeholder="Flight" />
     </div>
     <div class="flex-column reserveReservations">
-        <label>Airline: </label>
+        <p>Airline:</p>
         <input placeholder="Airline" />
     </div>
     <div class="flex-column reserveReservations">
-        <label>Cost: </label>
+        <p>Cost:</p>
         <input placeholder="0" />
     </div>
     <div class="flex-column reserveReservations">
-        <label>Name: </label>
+        <p>Name:</p>
         <input placeholder="Name" />
     </div>
     <div class="flex-column reserveReservations">
-        <label>Citizenship: </label>
+        <p>Citizenship:</p>
         <input placeholder="Citizenship" />
     </div>
     <div class="flex-column reserveReservations">
-        <label>Status: </label>
+        <p>Status:</p>
         <input placeholder="Active" />
     </div>
-    <button>Save</button>
+    <div class="saveButton">
+        <button class="blueButton">Save</button>
+    </div>
 </form>
 @code {
 

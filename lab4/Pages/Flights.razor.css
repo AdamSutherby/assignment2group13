@@ -1,0 +1,37 @@
+﻿.findFlights {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.findFlights input {
+    margin: 0px 48px 16px 0px;
+}
+.blueButton {
+    background-color: steelblue;
+    color: white;
+    height: fit-content;
+    width: 200px;
+    border-radius: 4px;
+}
+.blueButton:hover{
+    background-color: royalblue;
+    border-style:solid;
+    border-color: dodgerblue;
+}
+input{
+     width:100%;
+}
+h3{
+    text-align: center;
+    margin: 16px;
+}
+p{
+    margin: 0px;
+}
+.reserveButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+}

@@ -29,8 +29,10 @@ namespace Airport
         }
         public static Airport[] ReadAirportFromFile(string filePath)
         {
-            string filePath = "airports.csv";
-            string[] lines = File.ReadAllLines(filePath);
+            //string filePath = "airports.csv";
+            //string[] lines = File.ReadAllLines(filePath);
+            var path = Path.Combine(FileSystem.AppDataDirectory, "airports.csv");
+            string[] lines = File.ReadAllLines(path);
             Airport[] airport = new Airport[lines.Length];
 
             for (int i = 0; i < lines.Length; i++)
