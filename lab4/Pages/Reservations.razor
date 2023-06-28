@@ -52,5 +52,36 @@
     <button>Save</button>
 </form>
 @code {
+    private List<Reservations> reservations;
+    private Reservations reservationToEdit;
+    private string searchReservationCode;
+    private string searchAirline;
+    private string searchFullName;
+    private string errorMessage;
 
+    private async Task SearchResevations()
+    {
+        reservations = await ReservationManager.FindReservation(searchReservationCode, searchAirline, searchFullName);
+    }
+    private async Task EditReservation(Reservations reservations)
+    {
+        reservationToEdit = reservations;
+    }
+    private void UpdateReservation()
+    {
+        try
+        {
+            ReservationManager.UpdateReservation(reservationToEdit);
+            ClearEdit();
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+    private void ClearEdit()
+    {
+        reservationToEdit = null;
+        errorMessage = null;
+    }
 }
