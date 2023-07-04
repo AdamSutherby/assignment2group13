@@ -63,8 +63,8 @@ namespace lab4.Data
             {
                 ReservationCode = reservationCode,
                 FlightCode = flight.FlightCode,
-                Airline = flight.Airline,
-                Cost = flight.Cost,
+                Airline = flight.AirlineName,
+                Cost = flight.Price,
                 Citizenship = citizenship,
                 IsActive = true
             };
