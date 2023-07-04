@@ -4,67 +4,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lab4.Data
+namespace assignment2.Data
 {
-
-    public class Flight
+    abstract class Flights
     {
-        public string FlightCode { get; set; }
-        public string AirlineName { get; set; }
-        public string LeavingAirport { get; set; }
-        public string DestinationAirport { get; set; }
-        public string Day { get; set; }
-        public string Time { get; set; }
-        public int PassengerAmount { get; set; }
-        public int Price { get; set; }
+        public string flightCode { get; set; }
+        public string airline { get; set; }
+        public string leavingAirport { get; set; }
+        public string destinationAirport { get; set; }
+        public string dayOfweek { get; set; }
+        public string time { get; set; }
+        public string seatNumber { get; set; }
+        public double price { get; set; }
 
-        public Flight()
+
+        public Flights(string _flightCode, string _airline, string _leavingAirport, string _destinationAirport, string _dayOfWeek, string _time, string _seatNUmber, double _price)
         {
+            this.flightCode = _flightCode;
+            this.airline = _airline;
+            this.leavingAirport = _leavingAirport;
+            this.destinationAirport = _destinationAirport;
+            this.dayOfweek = _dayOfWeek;
+            this.time = _time;
+            this.seatNumber = _seatNUmber;
+            this.price = _price;
         }
 
-        public Flight(string flightCode, string airlineName, string leavingAirport, string destinationAirport,
-            string day, string time, int passengerAmount, int price)
+        public override string ToString()
         {
-            FlightCode = flightCode;
-            AirlineName = airlineName;
-            LeavingAirport = leavingAirport;
-            DestinationAirport = destinationAirport;
-            Day = day;
-            Time = time;
-            PassengerAmount = passengerAmount;
-            Price = price;
+            return ($"{flightCode},{airline},{leavingAirport},{destinationAirport},{dayOfweek},{time},{seatNumber},{price:C}");
         }
-
-        public static Flight FromString(string flightData)
-        {
-            string[] attributes = flightData.Split(',');
-
-            string airlineCode = attributes[0];
-            string airlineName = attributes[1];
-            string leavingAirport = attributes[2];
-            string destinationAirport = attributes[3];
-            string day = attributes[4];
-            string time = attributes[5];
-            int passengerAmount = int.Parse(attributes[6]);
-            int price = int.Parse(attributes[7]);
-
-            return new Flight(airlineCode, airlineName, leavingAirport, destinationAirport, day, time,
-                passengerAmount, price);
-        }
-        public static Flight[] ReadFlightsFromFile(string filePath)
-        {
-            //string filePath = "flights.csv";
-            //string[] lines = File.ReadAllLines(filePath);
-            var path = Path.Combine(FileSystem.AppDataDirectory, "flights.csv");
-            string[] lines = File.ReadAllLines(path);
-            Flight[] flights = new Flight[lines.Length];
-
-            for (int i = 0; i < lines.Length; i++)
-            {
-                flights[i] = Flight.FromString(lines[i]);
-            }
-
-            return flights;
-        }
+    }
+   
+    internal class Flights1 : Flights
+    {
+        public Flights1(string _flightNumber,
+            string _airline,
+            string _originAirport,
+            string _destinationAirport,
+            string _dayOfWeek,
+            string _time,
+            string _seatNUmber,
+            double _price)
+            : base(_flightNumber, _airline, _originAirport, _destinationAirport, _dayOfWeek, _time, _seatNUmber, _price)
+        { }
     }
 }

@@ -1,63 +1,213 @@
 ﻿@page "/flights"
 
+@using assignment2.Data
+@using System;
+@using System.IO;
+@using System.Collections.Generic;
+@using System.Linq;
+@using System.Text;
+@using System.Threading.Tasks;
+
 <h3>Flight Finder</h3>
 
 <form class="findFlights">
     <div>
         <p>From: </p>
-        <input placeholder="Any" id="from" />
+        <select id="from" @bind = "param_1">
+            @foreach (var airport in GetSortedAirports(GetUniqueAirports("From")))
+            {
+                <option>@airport</option>
+            }
+        </select>
     </div>
     <div>
         <p>To: </p>
-        <input placeholder="Any" id="to" />
+        <select id="to" @bind ="param_2">
+            @foreach (var airport in GetSortedAirports(GetUniqueAirports("To")))
+            {
+                <option>@airport</option>
+            }
+        </select>
     </div>
+
     <div>
         <p>Day: </p>
-        <input placeholder="Any" id="day" />
+        <select id="day" @bind = "param_3">
+            <option value ="Any">Any</option>
+            @foreach (var weekday in weekdays)
+            {
+                <option>@weekday</option>
+            }
+        </select>
     </div>
+
     <p></p>
-    <button class="blueButton">Find flights</button>
+    <button class="blueButton" @onclick=searchForFlights @onclick:preventDefault>Find flights</button>
+    <p></p>
+    <button class="blueButton" @onclick=test @onclick:preventDefault>TEST</button>
 </form>
 
 <h3>Flights</h3>
-<div class="flights">
-    <input placeholder="Loading..." />
-</div>
+<form class="flights">
+    <select id="selectflight" name="flightselector" @onchange="UpdateSelectedFlight">
+        <option value="">Select a flight</option>
+        @foreach (var flight in searchedFlights)
+        {
+            <option value="@flight.flightCode">@flight.flightCode - @flight.airline - @flight.leavingAirport - @flight.destinationAirport - @flight.dayOfweek - @flight.time - @flight.seatNumber - @flight.price</option>
+        }
+    </select>
+</form>
 
 <h3>Reserve</h3>
 <form>
     <div>
         <p>Flight Code: </p>
-        <input placeholder="Flight" />
+        <input placeholder="Flight" value="@param_4" readonly />
     </div>
     <div class="flex-column reserveFlights">
         <p>Airline: </p>
-        <input placeholder="Airline" />
+        <input placeholder="Airline" value="@param_5" readonly />
     </div>
     <div>
         <p>Day: </p>
-        <input placeholder="Day" />
+        <input placeholder="Day" value="@param_6" readonly />
     </div>
     <div>
         <p>Time: </p>
-        <input placeholder="Time" />
+        <input placeholder="Time" value="@param_7" readonly />
     </div>
     <div>
         <p>Cost: </p>
-        <input placeholder="0" />
+        <input placeholder="0" value="@param_8" readonly />
     </div>
     <div>
         <p>Name: </p>
-        <input placeholder="Name" />
+        <input placeholder="Name" value="@customerName" />
     </div>
     <div>
         <p>Citizenship: </p>
-        <input placeholder="Citizenship" />
+        <input placeholder="Citizenship" value="@customerCitizenship" />
     </div>
     <div class="reserveButton">
-        <button class="blueButton">Reserve</button>
+        <button class="blueButton" @onclick=CreateReservation >Reserve</button>
     </div>
+    <div class="reservationCode">@reservationCodeText</div>
 </form>
-@code {
+@code
+{
+
+    List<Flights1> flights = new List<Flights1>();
+    List<string> lines = new List<string>();
+    List<string> weekdays = new List<string>() {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        readingFlightsFile();
+    }
+    private void readingFlightsFile()
+    {
+        string fileName = @"C:\Users\adams\source\repos\MauiApp2test\MauiApp2test\Pages\flights.csv";
+        //string projectDirectory = Directory.GetCurrentDirectory();
+        //string filePath = Path.Combine(projectDirectory, fileName);
+        lines = File.ReadAllLines(fileName).ToList();
+
+        foreach (string line in lines)
+        {
+            string[] items = line.Split(',');
+            Flights1 flight = new Flights1(items[0], items[1], items[2], items[3], items[4], items[5], items[6], Convert.ToDouble(items[7]));
+            flights.Add(flight);
+        }
+    }
+
+    string param_1;
+    string param_2;
+    string param_3;
+    string param_4;
+    string param_5;
+    string param_6;
+    string param_7;
+    string param_8;
+    string customerName = null;
+    string customerCitizenship = null;
+    string reservationCodeText = string.Empty;
+    List<Flights1> searchedFlights = new List<Flights1>();
+
+    private void UpdateSelectedFlight(ChangeEventArgs e)
+    {
+        var selectedFlightCode = e.Value.ToString();
+        var selectedFlight = searchedFlights.FirstOrDefault(f => f.flightCode == selectedFlightCode);
+        if (selectedFlight != null)
+        {
+            param_4 = selectedFlight.flightCode;
+            param_5 = selectedFlight.airline;
+            param_6 = selectedFlight.dayOfweek;
+            param_7 = selectedFlight.time;
+            param_8 = Convert.ToString(selectedFlight.price);
+        }
+    }
+
+    private void searchForFlights()
+    {
+        searchedFlights.Clear();
+        foreach (var flight in flights)
+        {
+            if (param_1 == flight.leavingAirport && param_2 == flight.destinationAirport &&
+                (string.IsNullOrEmpty(param_3) || param_3 == "Any" || param_3 == flight.dayOfweek))
+            {
+                searchedFlights.Add(flight);
+            }
+        }
+    }
+
+
+    private List<string> GetUniqueAirports(string airportType)
+    {
+        List<string> airports = new List<string>();
+
+        foreach (var flight in flights)
+        {
+            if (airportType == "From")
+            {
+                if (!airports.Contains(flight.leavingAirport))
+                {
+                    airports.Add(flight.leavingAirport);
+                }
+            }
+            else if (airportType == "To")
+            {
+                if (!airports.Contains(flight.destinationAirport))
+                {
+                    airports.Add(flight.destinationAirport);
+                }
+            }
+        }
+
+        return airports;
+    }
+
+    private List<string> GetSortedAirports(List<string> airports)
+    {
+        return airports.OrderBy(a => a).ToList();
+    }
+
+    private void CreateReservation()
+    {
+        if (customerName == null || customerCitizenship == null)
+        {
+            //write an error prevention telling the user to enter a name and citizenship
+        }
+        // Create reservation Code...code
+        reservationCodeText = $"Your reservation code is: {reservationCode}.";
+    }
+
+    private void test()
+    {
+        searchedFlights.Clear();
+        foreach (var flight in flights)
+        {
+            searchedFlights.Add(flight);
+        }
+    }
 
 }
